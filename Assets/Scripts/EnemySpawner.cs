@@ -23,7 +23,7 @@ public class EnemySpawner : MonoBehaviour {
 
     private void Update() {
         // 게임 오버 상태일때는 생성하지 않음
-        if (GameManager.instance != null && GameManager.instance.isGameover)
+        if (GameManager.Instance != null && GameManager.Instance.IsGameover)
         {
             return;
         }

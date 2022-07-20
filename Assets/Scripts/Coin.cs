@@ -6,7 +6,7 @@ public class Coin : MonoBehaviour, IItem {
 
     public void Use(GameObject target) {
         // 게임 매니저로 접근해 점수 추가
-        GameManager.instance.AddScore(score);
+        GameManager.Instance.AddScore(score);
         // 사용되었으므로, 자신을 파괴
         Destroy(gameObject);
     }
