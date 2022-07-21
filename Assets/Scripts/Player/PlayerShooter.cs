@@ -11,11 +11,6 @@ public class PlayerShooter : MonoBehaviour {
     private PlayerInput _input; // 플레이어의 입력
     private Animator _animator; // 애니메이터 컴포넌트
 
-    private static class AnimID
-    {
-        public static readonly int Reload = Animator.StringToHash("Reload");
-    }
-
     private void Awake()
     {
         // 사용할 컴포넌트들을 가져오기
@@ -48,7 +43,7 @@ public class PlayerShooter : MonoBehaviour {
         {
             if (_gun.TryReload())
             {
-                _animator.SetTrigger(AnimID.Reload);
+                _animator.SetTrigger(PlayerAnimID.Reload);
             }
         }
     }

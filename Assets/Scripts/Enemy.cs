@@ -27,7 +27,7 @@ public class Enemy : LivingEntity {
         get
         {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
+            if (targetEntity != null && !targetEntity.IsDead)
             {
                 return true;
             }
@@ -58,7 +58,7 @@ public class Enemy : LivingEntity {
     // 주기적으로 추적할 대상의 위치를 찾아 경로를 갱신
     private IEnumerator UpdatePath() {
         // 살아있는 동안 무한 루프
-        while (!dead)
+        while (!IsDead)
         {
             // 0.25초 주기로 처리 반복
             yield return new WaitForSeconds(0.25f);

@@ -10,11 +10,6 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody _rigidbody; // 플레이어 캐릭터의 리지드바디
     private Animator _animator; // 플레이어 캐릭터의 애니메이터
 
-    private static class AnimID
-    {
-        public static readonly int MOVE = Animator.StringToHash("Move");
-    }
-
     private void Awake()
     {
         // 사용할 컴포넌트들의 참조를 가져오기
@@ -31,7 +26,7 @@ public class PlayerMovement : MonoBehaviour {
         move();
         rotate();
 
-        _animator.SetFloat(AnimID.MOVE, _input.MoveDirection);
+        _animator.SetFloat(PlayerAnimID.Move, _input.MoveDirection);
     }
 
     // 입력값에 따라 캐릭터를 앞뒤로 움직임
