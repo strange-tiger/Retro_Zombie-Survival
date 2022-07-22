@@ -4,8 +4,9 @@
 public class PlayerMovement : MonoBehaviour {
     public float MoveSpeed = 5f; // 앞뒤 움직임의 속도
     public float RotateSpeed = 180f; // 좌우 회전 속도
+    public float MouseMoveSpeed = 1f; // 마우스 기반 움직임의 속도
 
-
+    private Camera _mainCam;
     private PlayerInput _input; // 플레이어 입력을 알려주는 컴포넌트
     private Rigidbody _rigidbody; // 플레이어 캐릭터의 리지드바디
     private Animator _animator; // 플레이어 캐릭터의 애니메이터
@@ -13,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Awake()
     {
         // 사용할 컴포넌트들의 참조를 가져오기
+        _mainCam = Camera.main;
         _input = GetComponent<PlayerInput>();
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
@@ -23,10 +25,36 @@ public class PlayerMovement : MonoBehaviour {
     private void FixedUpdate()
     {
         // 물리 갱신 주기마다 움직임, 회전, 애니메이션 처리 실행
-        move();
-        rotate();
+        // move();
+        // rotate();
 
-        _animator.SetFloat(PlayerAnimID.Move, _input.MoveDirection);
+        //_animator.SetFloat(PlayerAnimID.Move, _input.MoveDirection);
+
+        // 마우스 따라 이동
+
+        Ray mouseRay = _mainCam.ScreenPointToRay(Input.mousePosition);
+
+        //LayerMask targetLayer = LayerMask.GetMask("Ground");
+        LayerMask targetLayer = LayerMask.NameToLayer("Ground");
+        int layerMask = (1 << targetLayer.value);
+
+        RaycastHit hit;
+        bool isHit = Physics.Raycast(mouseRay.origin, mouseRay.direction, out hit, 100f, layerMask);
+
+        Vector3 pointerPosition;
+        Vector3 moveToPointer;
+        Vector3 deltaPosition;
+        if (isHit)
+        {
+            pointerPosition = hit.point;
+            moveToPointer = pointerPosition - transform.position;
+            deltaPosition = MouseMoveSpeed * Time.fixedDeltaTime * moveToPointer;
+
+            _rigidbody.MovePosition(_rigidbody.position + deltaPosition);
+            transform.LookAt(pointerPosition);
+
+            _animator.SetFloat(PlayerAnimID.Move, moveToPointer.magnitude);
+        }
     }
 
     // 입력값에 따라 캐릭터를 앞뒤로 움직임
